@@ -3,11 +3,13 @@ const axios = require('axios');
 const crypto = require('crypto');
 
 const app = express();
-const PORT = 3000;
+// שימוש בפורט ש-Render מקצה אוטומטית, או 3000 כברירת מחדל
+const PORT = process.env.PORT || 3000;
 
-const CLIENT_ID = 'tsj8rffpnnfferva7uxa';
-const CLIENT_SECRET = '55fc3ecc8f0b40cf878e93347d756adc';
-const DEVICE_ID = 'bfb3d0f8751bb62a87ijmr';
+// קריאת המשתנים מהגדרות ה-Environment ב-Render
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const DEVICE_ID = process.env.DEVICE_ID;
 const BASE_URL = 'https://openapi.tuyaeu.com'; 
 
 function calculateSign(clientId, secret, t, accessToken, method, url, body) {
@@ -36,11 +38,10 @@ app.get('/light-blue', async (req, res) => {
 
         const token = tokenRes.data.result.access_token;
 
-        // 2. שליחת הפקודה המעודכנת למנורה
+        // 2. שליחת פקודות למנורה
         const t2 = Date.now().toString();
         const cmdUrl = `/v1.0/devices/${DEVICE_ID}/commands`;
         
-        // כאן תיקנתי את הפקודות: הדלקה -> מצב צבע -> צבע כחול
         const cmdBody = { 
             "commands": [
                 { "code": "switch_led", "value": true },
@@ -74,5 +75,5 @@ app.get('/light-blue', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log('השרת פעיל! כנס לקישור: http://localhost:3000/light-blue');
+    console.log(`השרת פעיל בפורט ${PORT}`);
 });
