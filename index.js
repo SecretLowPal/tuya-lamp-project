@@ -3,10 +3,8 @@ const axios = require('axios');
 const crypto = require('crypto');
 
 const app = express();
-// שימוש בפורט ש-Render מקצה אוטומטית, או 3000 כברירת מחדל
-const PORT = process.env.PORT || 3000;
 
-// קריאת המשתנים מהגדרות ה-Environment ב-Render
+// קריאת המשתנים מהגדרות ה-Environment ב-Vercel
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const DEVICE_ID = process.env.DEVICE_ID;
@@ -74,6 +72,5 @@ app.get('/light-blue', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`השרת פעיל בפורט ${PORT}`);
-});
+// יצוא האפליקציה במקום להפעיל אותה ברקע (ההתאמה ל-Vercel Serverless)
+module.exports = app;
